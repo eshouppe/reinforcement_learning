@@ -3,9 +3,10 @@ Solve OpenAI gym Frozen Lake test problem trying different algorithms.
 """
 import gym
 import numpy as np
+import matplotlib.pyplot as plt
 
 
-def froz_lake_q_learn():
+def frzn_lk_q_tbl_lrn():
     """Q-learning as frozen lake problem solving approach"""
     # Load the environment
     env = gym.make('FrozenLake-v0')
@@ -41,10 +42,29 @@ def froz_lake_q_learn():
                 break
         reward_list.append(reward_all)
 
-    return Q, reward_list, num_episodes
+    return reward_list, num_episodes
+
+#
+def frzn_lk_q_ntwrk_lrn():
+    pass
+
+#
+def plot_reward_by_try():
+    """Plot the average reward by try"""
+    plt.plot(range(1, 11), all_avg_rewards)
+    plt.ylim(0.15, 0.85)
+    plt.xlabel("Try number")
+    plt.ylabel("Average reward")
+    plt.show()
 
 
-learned_q_tbl, total_reward, episode_cnt = froz_lake_q_learn()
-print("Score over time: {}".format(sum(total_reward) / float(episode_cnt)))
-print("Final Q-table values: ")
-print(learned_q_tbl)
+# Execute multiple tries of algorithm and display results
+all_avg_rewards = []
+for new_try in range(10):
+    list_reward, episode_cnt = frzn_lk_q_tbl_lrn()
+    average_reward = sum(list_reward) / float(episode_cnt)
+    print("Average reward: {}".format(average_reward))
+    all_avg_rewards.append(average_reward)
+
+print("Best average reward in 10 tries: {}".format(np.max(all_avg_rewards)))
+plot_reward_by_try()
